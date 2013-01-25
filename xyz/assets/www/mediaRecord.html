@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+	<title>Device</title>
+
+	<script type="text/javascript" src="cordova-2.2.0.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		document.addEventListener("deviceready", onDeviceReady, false);
+		function recordAudio() {
+			var src = "myrecording.amr";
+			var mediaRec = new Media(src, onSuccess, onError);
+
+			// Record audio
+			mediaRec.startRecord();
+
+			// Stop recording after 10 sec
+			var recTime = 0;
+			var recInterval = setInterval(function() {
+				recTime = recTime + 1;
+				setAudioPosition(recTime + " sec");
+				if (recTime >= 10) {
+					clearInterval(recInterval);
+					mediaRec.stopRecord();
+				}
+			}, 1000);
+		}
+
+		function onDeviceReady() {
+			recordAudio();
+		}
+
+		function onSuccess() {
+			console.log("recordAudio():Audio Success");
+		}
+
+		function onError(error) {
+			alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+		}
+
+		// Set audio position
+
+		function setAudioPosition(position) {
+			document.getElementById('audio_position').innerHTML = position;
+		}
+	</script>
+</head>
+<body>
+	<p id="media">
+		Recording audio...
+	</p>
+	<p id="audio_position"></p>
+
+</body>
+</html>

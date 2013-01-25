@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+	<title>Compass</title>
+
+	<script type="text/javascript" src="cordova-2.2.0.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var watchID = null;
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		function onDeviceReady() {
+			startWatch();
+		}
+
+		function startWatch() {
+
+			// Update compass every 3 seconds
+			var options = {
+				frequency : 3000
+			};
+
+			watchID = navigator.compass.watchHeading(onSuccess, onError, options);
+		}
+
+		function stopWatch() {
+			if (watchID) {
+				navigator.compass.clearWatch(watchID);
+				watchID = null;
+			}
+		}
+
+		function onSuccess(heading) {
+			var element = document.getElementById('heading');
+			element.innerHTML = 'Heading: ' + heading.magneticHeading;
+		}
+
+		function onError(compassError) {
+			alert('Compass error: ' + compassError.code);
+		}
+	</script>
+</head>
+
+<body>
+	<div id="heading">
+		Waiting for heading...
+	</div>
+	<button onclick="startWatch();">
+		Start Watching
+	</button>
+	<button onclick="stopWatch();">
+		Stop Watching
+	</button>
+</body>
+</html>

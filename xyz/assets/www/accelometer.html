@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+	<title>Accelometer</title>
+
+	<script type="text/javascript" src="cordova-2.2.0.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var watchID = null;
+		// Wait for Cordova to load
+
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		// Cordova is ready
+
+		function onDeviceReady() {
+			startWatch();
+		}
+
+		function startWatch() {
+			// Update acceleration every 3 seconds
+			var options = {
+				frequency : 3000
+			};
+
+			watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+		}
+
+		function stopWatch() {
+			if (watchID) {
+				navigator.accelerometer.clearWatch(watchID);
+				watchID = null;
+			}
+		}
+
+		// onSuccess: Get a snapshot of the current acceleration
+
+		function onSuccess(acceleration) {
+			alert('Acceleration X: ' + acceleration.x + '\n' + 
+						'Acceleration Y: ' + acceleration.y + '\n' + 
+						'Acceleration Z: ' + acceleration.z + '\n' + 
+						'Timestamp: ' + acceleration.timestamp + '\n');
+		}
+
+		// onError: Failed to get the acceleration
+
+		function onError() {
+			alert('onError!');
+		}
+
+	</script>
+</head>
+
+<body>
+	<div id="accelerometer">
+		Waiting for accelerometer...
+	</div>
+	<button onclick="stopWatch();"><a href="index.html">
+		Stop Watching</a>
+	</button>
+</body>
+</html>
